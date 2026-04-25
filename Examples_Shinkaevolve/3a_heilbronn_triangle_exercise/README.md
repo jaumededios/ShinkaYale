@@ -36,17 +36,21 @@ reports your score as a ratio against this benchmark.
   the triangle together with the corresponding normalised minimum triangle
   area. Any valid construction is acceptable as a starting point; a small
   random search or a simple symmetric hand-built layout is enough to get
-  the pipeline moving.
-- In `evaluate.py`, write `validate_output()` so it checks the returned
-  points really lie inside the triangle and the reported score matches the
-  geometry, then fill in `aggregate_metrics()` so the score reported back
-  to Shinka is the benchmark ratio.
+  the pipeline moving. The helper `sample_points_in_triangle()` is
+  provided, but the area / scoring helpers are left for you to fill in.
+- In `evaluate.py`, fill in the geometry helpers
+  (`check_inside_triangle()`, `triangle_area()`,
+  `min_triangle_area_normalized()`), then write `validate_output()` so it
+  checks the returned points really lie inside the triangle and the
+  reported score matches the geometry. Finally, fill in
+  `aggregate_metrics()` so the score reported back to Shinka is the
+  benchmark ratio.
 - Write a short prompt in `prompt.txt` describing the problem to the LLM
   and any ideas you want it to try (symmetry, boundary placements, jittered
   lattices, gradient-style refinement, and so on).
 
-The geometry helpers and plotting code are already provided. In
-particular, `plotting.py` will draw the configuration with the critical
+Only the basic constants, sampling scaffold, and plotting code are
+provided. `plotting.py` will draw the configuration with the critical
 smallest triangle highlighted once the evaluator is wired up.
 
 ## Running it

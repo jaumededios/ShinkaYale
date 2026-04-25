@@ -16,22 +16,15 @@ TRIANGLE_AREA = SQRT3 / 4.0
 
 
 def check_inside_triangle(points, atol: float = 1e-6) -> bool:
-    x = points[:, 0]
-    y = points[:, 1]
-    return bool(
-        np.all(y >= -atol)
-        and np.all(SQRT3 * x <= SQRT3 - y + atol)
-        and np.all(y <= SQRT3 * x + atol)
-    )
+    pass
 
 
 def triangle_area(a, b, c) -> float:
-    return float(abs(a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1])) / 2.0)
+    pass
 
 
 def min_triangle_area_normalized(points) -> float:
-    min_area = min(triangle_area(a, b, c) for a, b, c in itertools.combinations(points, 3))
-    return float(min_area / TRIANGLE_AREA)
+    pass
 
 
 def validate_output(run_output, atol: float = 1e-8):

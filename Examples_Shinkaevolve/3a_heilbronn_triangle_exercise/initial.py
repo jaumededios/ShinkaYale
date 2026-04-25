@@ -41,14 +41,11 @@ def sample_points_in_triangle(rng, num_points: int) -> np.ndarray:
 
 
 def triangle_area(a, b, c) -> float:
-    doubled_area = (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
-    return float(abs(doubled_area) / 2.0)
+    pass
 
 
 def min_triangle_area_normalized(points) -> float:
-    points = np.asarray(points, dtype=float)
-    min_area = min(triangle_area(a, b, c) for a, b, c in itertools.combinations(points, 3))
-    return float(min_area / TRIANGLE_AREA)
+    pass
 
 
 def run_heilbronn(seed: int = 0, num_points: int = 11):
