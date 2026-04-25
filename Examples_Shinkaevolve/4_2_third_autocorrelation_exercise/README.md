@@ -46,22 +46,26 @@ represent. The starter uses $N = 400$.
 ## What you fill in
 
 `initial.py` contains a `search_function()` that returns a vector
-$(f_1, \dots, f_N)$ together with its ratio. The baseline is a simple
-random search over sign patterns: it occasionally finds something
-non-trivial but is easily beaten. Your job (with Shinka's help) is to
-find constructions — analytic, structured, or refined numerically — that
-push the ratio below the baseline and towards the best-known value.
+$(f_1, \dots, f_N)$ together with its ratio. Signed values are allowed in
+this problem, so a basic block-based search over positive and negative
+values is enough to get started.
+
+In `evaluate.py`, write `validate_output()` so it checks the return
+shape and verifies that the reported ratio matches the value recomputed
+from the returned step function. Then fill in `aggregate_metrics()` so
+the score reported back to Shinka is the benchmark ratio.
 
 Write a short prompt in `prompt.txt` describing the mathematical problem,
 the output contract, and whatever ideas you want the LLM to try.
 
-`evaluate.py` recomputes the ratio from the returned vector and rejects
-any mismatch, so you do not have to worry about gaming the score.
-`plotting.py` visualises the step function and its autoconvolution.
+The convolution helper and plotting code are already provided.
+`plotting.py` visualises the step function and its autoconvolution once
+the evaluator is wired up.
 
 ## Running it
 
-From this folder:
+From this folder, after you fill in `search_function()`, the holes in
+`evaluate.py`, and `prompt.txt`:
 
 ```bash
 python3 initial.py                                           # sanity check

@@ -129,22 +129,27 @@ non-negativity enforced here.
 ## What you fill in
 
 `initial.py` contains a `search_function()` that returns a vector of
-non-negative block values together with its ratio. The baseline is the
-same simple random search as in problem 4.2, but the random values are
-drawn from $[0, 1]$ instead of $[-1, 1]$. Your job (with Shinka's help)
-is to replace this with a better construction or search strategy.
+non-negative block values together with its ratio. A simple block-based
+search is enough to get started, but the crucial point is that the
+returned values must stay non-negative.
+
+In `evaluate.py`, write `validate_output()` so it checks the return
+shape, enforces non-negativity, and verifies that the reported ratio
+matches the value recomputed from the returned step function. Then fill
+in `aggregate_metrics()` so the score reported back to Shinka is the
+benchmark ratio.
 
 Write a short prompt in `prompt.txt` describing the mathematical problem,
 the output contract, and whatever ideas you want the LLM to try.
 
-`evaluate.py` recomputes the ratio from the returned vector, rejects
-anything with a negative value, and rejects mismatched reported scores.
+The convolution helper and plotting code are already provided.
 `plotting.py` visualises the step function and its autoconvolution,
-with the maximum of $f * f$ highlighted.
+with the maximum of $f * f$ highlighted, once the evaluator is wired up.
 
 ## Running it
 
-From this folder:
+From this folder, after you fill in `search_function()`, the holes in
+`evaluate.py`, and `prompt.txt`:
 
 ```bash
 python3 initial.py                                           # sanity check

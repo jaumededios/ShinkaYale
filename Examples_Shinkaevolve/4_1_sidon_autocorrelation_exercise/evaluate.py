@@ -29,28 +29,7 @@ def compute_c1(f_values) -> float:
 
 
 def validate_output(run_output, atol: float = 1e-6):
-    try:
-        f_values, reported_c1 = run_output
-    except (TypeError, ValueError):
-        return False, "run_autocorrelation must return (f_values, c1)."
-
-    f_values = np.asarray(f_values, dtype=float)
-    reported_c1 = float(reported_c1)
-
-    if f_values.ndim != 1 or len(f_values) == 0:
-        return False, "f_values must be a non-empty 1D array."
-    if not (np.all(np.isfinite(f_values)) and np.isfinite(reported_c1)):
-        return False, "Output contains non-finite values."
-    if np.any(f_values < -1e-8):
-        return False, "f must be non-negative (negative values detected)."
-
-    actual_c1 = compute_c1(np.maximum(f_values, 0.0))
-    if not np.isfinite(actual_c1):
-        return False, "The integral of f is too close to zero."
-    if abs(actual_c1 - reported_c1) > atol:
-        return False, "Reported C1 does not match the recomputed value."
-
-    return True, None
+    pass
 
 
 def get_experiment_kwargs(run_index: int) -> dict:
@@ -61,24 +40,18 @@ def aggregate_metrics(results) -> dict:
     if not results:
         return {"combined_score": 0.0}
 
-    c1_values = [float(c1) for _, c1 in results]
-    mean_c1 = sum(c1_values) / len(c1_values)
-    best_values, best_c1 = min(results, key=lambda item: float(item[1]))
+    # do any computations you have to do
+    extra_data = {
+        # any other data you may want to save
+    }
 
     return {
-        "combined_score": BENCHMARK / mean_c1,
+        "combined_score": None,  # Fill out with your score
         "public": {
-            "c1": mean_c1,
-            "benchmark_ratio": BENCHMARK / mean_c1,
-            "n_points": len(best_values),
+            # any other information you may want to save
         },
-        "private": {
-            "best_c1": float(best_c1),
-        },
-        "extra_data": {
-            "f_values": np.asarray(best_values, dtype=float),
-            "c1": float(best_c1),
-        },
+        "private": {},
+        "extra_data": extra_data,
     }
 
 

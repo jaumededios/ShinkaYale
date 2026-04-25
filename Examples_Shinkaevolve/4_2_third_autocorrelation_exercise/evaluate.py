@@ -24,26 +24,7 @@ def compute_c3(f_values) -> float:
 
 
 def validate_output(run_output, atol: float = 1e-6):
-    try:
-        f_values, reported_c3 = run_output
-    except (TypeError, ValueError):
-        return False, "run_autocorrelation must return (f_values, c3)."
-
-    f_values = np.asarray(f_values, dtype=float)
-    reported_c3 = float(reported_c3)
-
-    if f_values.ndim != 1 or len(f_values) == 0:
-        return False, "f_values must be a non-empty 1D array."
-    if not (np.all(np.isfinite(f_values)) and np.isfinite(reported_c3)):
-        return False, "Output contains non-finite values."
-
-    actual_c3 = compute_c3(f_values)
-    if not np.isfinite(actual_c3):
-        return False, "The integral of f is too close to zero."
-    if abs(actual_c3 - reported_c3) > atol:
-        return False, "Reported C3 does not match the recomputed value."
-
-    return True, None
+    pass
 
 
 def get_experiment_kwargs(run_index: int) -> dict:
@@ -54,24 +35,18 @@ def aggregate_metrics(results) -> dict:
     if not results:
         return {"combined_score": 0.0}
 
-    c3_values = [float(c3) for _, c3 in results]
-    mean_c3 = sum(c3_values) / len(c3_values)
-    best_values, best_c3 = min(results, key=lambda item: float(item[1]))
+    # do any computations you have to do
+    extra_data = {
+        # any other data you may want to save
+    }
 
     return {
-        "combined_score": BENCHMARK / mean_c3,
+        "combined_score": None,  # Fill out with your score
         "public": {
-            "c3": mean_c3,
-            "benchmark_ratio": BENCHMARK / mean_c3,
-            "n_points": len(best_values),
+            # any other information you may want to save
         },
-        "private": {
-            "best_c3": float(best_c3),
-        },
-        "extra_data": {
-            "f_values": np.asarray(best_values, dtype=float),
-            "c3": float(best_c3),
-        },
+        "private": {},
+        "extra_data": extra_data,
     }
 
 

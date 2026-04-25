@@ -77,23 +77,27 @@ That is the quantity the evaluator scores on. **Smaller is better.**
 ## What you fill in
 
 - `initial.py`: write `search_coefficients()` so it returns a tuple
-  `(coeffs, c4_bound, r_max)`. The starter returns the trivial vector
-  $(1, 0, 0)$, which is valid but weak. You are free to change the
-  number of coefficients (up to 6), the search strategy, and the
-  starting points — the evaluator only cares about the returned tuple.
+  `(coeffs, c4_bound, r_max)`. You are free to change the number of
+  coefficients (up to 6), the search strategy, and the starting points
+  — the evaluator only cares about the returned tuple.
+- `evaluate.py`: write `validate_output()` so it recomputes
+  `(c4_bound, r_max)` from the returned coefficients and rejects any
+  mismatch, then fill in `aggregate_metrics()` so smaller `c4_bound`
+  values score better.
 - `prompt.txt`: describe the problem, the Ansatz, and any search
   strategies you want the LLM to try (structured coefficient templates,
   random restarts, gradient-style local refinement, etc.).
 
-`evaluate.py` and `plotting.py` are already in place. The evaluator
-rebuilds $P$ using SymPy's exact rational arithmetic, recomputes
-$r_{\max}$ by certified sign changes, and rejects any mismatch between
-your reported $(c_4, r_{\max})$ and the recomputed ones — so the number
-you return has to be correct.
+The Hermite/SymPy helper code and plotting code are already in place.
+In particular, the evaluator helpers rebuild $P$ using SymPy's exact
+arithmetic and recompute $r_{\max}$ by certified sign changes, and
+`plotting.py` draws the resulting polynomial once the evaluator is wired
+up.
 
 ## Running it
 
-From this folder:
+From this folder, after you fill in `search_coefficients()`, the holes in
+`evaluate.py`, and `prompt.txt`:
 
 ```bash
 python3 initial.py                                           # sanity check
@@ -111,4 +115,3 @@ python3 run_evo.py                                           # launch Shinka
   it.
 - $H_{4k}(0)$ grows fast ($H_{12}(0) = 665{,}280$), so meaningful $c_k$
   values shrink sharply with $k$. Scale-aware random search matters.
-- For a worked version, see `../5_uncertainty_inequality_solution`.

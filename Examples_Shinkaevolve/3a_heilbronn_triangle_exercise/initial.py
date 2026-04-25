@@ -8,22 +8,18 @@ import numpy as np
 def search_points(
     seed: int = 0,
     num_points: int = 11,
+    num_candidates: int = 300,
 ):
     """
-    Starter construction for the Heilbronn triangle exercise.
+    Write a construction that returns:
+    - `points`: an array of shape (num_points, 2) inside the triangle
+    - `score`: the corresponding normalized minimum triangle area
 
-    Replace this with a better construction. The current program is valid but
-    weak: all points lie on the base of the triangle, so the smallest triangle
-    area is zero.
+    A simple random-search baseline is enough to get started: sample valid
+    point sets in the triangle, score them with
+    `min_triangle_area_normalized(points)`, and keep the best one.
     """
-    points = np.column_stack(
-        [
-            np.linspace(0.0, 1.0, num_points),
-            np.zeros(num_points),
-        ]
-    )
-    score = min_triangle_area_normalized(points)
-    return points, score
+    pass
 
 
 # EVOLVE-BLOCK-END

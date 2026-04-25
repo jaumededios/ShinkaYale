@@ -35,26 +35,7 @@ def min_triangle_area_normalized(points) -> float:
 
 
 def validate_output(run_output, atol: float = 1e-8):
-    try:
-        points, reported_score = run_output
-    except (TypeError, ValueError):
-        return False, "run_heilbronn must return (points, min_area_normalized)."
-
-    points = np.asarray(points, dtype=float)
-    reported_score = float(reported_score)
-
-    if points.shape != (NUM_POINTS, 2):
-        return False, f"Expected points with shape ({NUM_POINTS}, 2), got {points.shape}."
-    if not (np.all(np.isfinite(points)) and np.isfinite(reported_score)):
-        return False, "Output contains non-finite values."
-    if not check_inside_triangle(points):
-        return False, "At least one point lies outside the triangle."
-
-    actual_score = min_triangle_area_normalized(points)
-    if abs(actual_score - reported_score) > atol:
-        return False, "Reported normalized area does not match the geometry."
-
-    return True, None
+    pass
 
 
 def get_experiment_kwargs(run_index: int) -> dict:
@@ -65,23 +46,18 @@ def aggregate_metrics(results) -> dict:
     if not results:
         return {"combined_score": 0.0}
 
-    scores = [float(score) for _, score in results]
-    mean_score = sum(scores) / len(scores)
-    best_points, best_score = max(results, key=lambda item: float(item[1]))
+    # do any computations you have to do
+    extra_data = {
+        # any other data you may want to save
+    }
 
     return {
-        "combined_score": mean_score / BENCHMARK,
+        "combined_score": None,  # Fill out with your score
         "public": {
-            "min_area_normalized": mean_score,
-            "benchmark_ratio": mean_score / BENCHMARK,
+            # any other information you may want to save
         },
-        "private": {
-            "best_min_area_normalized": float(best_score),
-        },
-        "extra_data": {
-            "points": np.asarray(best_points, dtype=float),
-            "min_area_normalized": float(best_score),
-        },
+        "private": {},
+        "extra_data": extra_data,
     }
 
 

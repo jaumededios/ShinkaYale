@@ -67,29 +67,7 @@ def compute_c4(coeffs) -> tuple[float, float]:
 
 
 def validate_output(run_output, atol: float = 1e-8):
-    try:
-        coeffs, reported_c4, reported_rmax = run_output
-    except (TypeError, ValueError):
-        return False, "run_uncertainty must return (coeffs, c4_bound, r_max)."
-
-    coeffs = np.asarray(coeffs, dtype=float)
-    reported_c4 = float(reported_c4)
-    reported_rmax = float(reported_rmax)
-
-    if not (np.all(np.isfinite(coeffs)) and np.isfinite(reported_c4) and np.isfinite(reported_rmax)):
-        return False, "Output contains non-finite values."
-
-    try:
-        c4, r_max = compute_c4(coeffs)
-    except Exception as exc:
-        return False, str(exc)
-
-    if abs(c4 - reported_c4) > atol:
-        return False, f"Reported C4 does not match recomputed value: {reported_c4:.12g} vs {c4:.12g}."
-    if abs(r_max - reported_rmax) > atol:
-        return False, f"Reported r_max does not match recomputed value: {reported_rmax:.12g} vs {r_max:.12g}."
-
-    return True, None
+    pass
 
 
 def get_experiment_kwargs(run_index: int) -> dict:
@@ -100,24 +78,18 @@ def aggregate_metrics(results) -> dict:
     if not results:
         return {"combined_score": 0.0}
 
-    c4_values = [float(c4) for _, c4, _ in results]
-    mean_c4 = sum(c4_values) / len(c4_values)
-    best_coeffs, best_c4, best_rmax = min(results, key=lambda item: float(item[1]))
+    # do any computations you have to do
+    extra_data = {
+        # any other data you may want to save
+    }
 
     return {
-        "combined_score": 1.0 / max(mean_c4, 1e-12),
+        "combined_score": None,  # Fill out with your score
         "public": {
-            "c4_bound": mean_c4,
-            "r_max": float(best_rmax),
+            # any other information you may want to save
         },
-        "private": {
-            "best_c4_bound": float(best_c4),
-        },
-        "extra_data": {
-            "coeffs": np.asarray(best_coeffs, dtype=float),
-            "c4_bound": float(best_c4),
-            "r_max": float(best_rmax),
-        },
+        "private": {},
+        "extra_data": extra_data,
     }
 
 

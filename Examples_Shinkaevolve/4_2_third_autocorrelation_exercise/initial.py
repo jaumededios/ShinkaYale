@@ -9,21 +9,16 @@ def search_function(
     num_candidates: int = 400,
 ):
     """
-    Simple baseline: random search over signed piecewise-constant step functions.
+    Write a construction that returns:
+    - `f_values`: a 1D array of step-function values
+    - `c3`: the ratio max |f * f| / (integral(f) ** 2)
+
+    Unlike problem 4.1, this exercise allows signed values. A simple
+    block-based search is enough to get started: sample a few
+    piecewise-constant candidates, score them with `compute_c3(values)`,
+    and keep the best one.
     """
-    rng = np.random.default_rng(seed)
-    best_values = np.ones(num_points, dtype=float)
-    best_c3 = compute_c3(best_values)
-
-    for _ in range(num_candidates):
-        block_values = rng.uniform(-1.0, 1.0, size=num_blocks)
-        values = expand_blocks(block_values, num_points)
-        c3 = compute_c3(values)
-        if np.isfinite(c3) and c3 < best_c3:
-            best_values = values
-            best_c3 = c3
-
-    return best_values, best_c3
+    pass
 
 
 # EVOLVE-BLOCK-END

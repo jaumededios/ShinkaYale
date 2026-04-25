@@ -6,19 +6,17 @@ from scipy.special import hermite
 
 def search_coefficients(seed: int = 0, num_coeffs: int = 3, num_candidates: int = 250):
     """
-    Starter construction for the uncertainty-inequality exercise.
+    Write a construction that returns:
+    - `coeffs`: coefficients for H_0, H_4, H_8, ...
+    - `c4_bound`: the value r_max^2 / (2*pi)
+    - `r_max`: the largest positive sign-changing root of P(x) / x^2
 
-    Replace this with a better construction. The current program is valid
-    but weak: it returns the trivial coefficient vector (1, 0, 0), which
-    gives a C4 bound much larger than anything in the literature.
-
-    You are free to change num_coeffs (up to the evaluator's cap of 6),
-    the search strategy, and the starting points. What you MUST preserve
-    is the return signature: (coeffs, c4_bound, r_max).
+    A simple coefficient search is enough to get started: try a few small
+    Hermite coefficient vectors, score them with `numeric_c4(coeffs)`,
+    and keep the best one. Preserve the return signature
+    `(coeffs, c4_bound, r_max)`.
     """
-    coeffs = np.array([1.0] + [0.0] * (num_coeffs - 1), dtype=float)
-    c4, r_max = numeric_c4(coeffs)
-    return coeffs, c4, r_max
+    pass
 
 
 # EVOLVE-BLOCK-END

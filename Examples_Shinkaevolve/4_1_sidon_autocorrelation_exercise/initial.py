@@ -9,24 +9,16 @@ def search_function(
     num_candidates: int = 400,
 ):
     """
-    Simple baseline: random search over NON-NEGATIVE piecewise-constant
-    step functions. This is the same kind of search as in the (signed)
-    third-autocorrelation problem, but we clamp the block values to be
-    non-negative so the problem is the proper Sidon-like analogue.
+    Write a construction that returns:
+    - `f_values`: a 1D array of step-function values
+    - `c1`: the ratio max(f * f) / (integral(f) ** 2)
+
+    The key constraint for this exercise is that `f_values` must be
+    non-negative. A simple block-based search is enough to get started:
+    sample a few non-negative piecewise-constant candidates, score them
+    with `compute_c1(values)`, and keep the best one.
     """
-    rng = np.random.default_rng(seed)
-    best_values = np.ones(num_points, dtype=float)
-    best_c1 = compute_c1(best_values)
-
-    for _ in range(num_candidates):
-        block_values = rng.uniform(0.0, 1.0, size=num_blocks)
-        values = expand_blocks(block_values, num_points)
-        c1 = compute_c1(values)
-        if np.isfinite(c1) and c1 < best_c1:
-            best_values = values
-            best_c1 = c1
-
-    return best_values, best_c1
+    pass
 
 
 # EVOLVE-BLOCK-END

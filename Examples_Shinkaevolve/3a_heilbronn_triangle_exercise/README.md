@@ -34,21 +34,25 @@ reports your score as a ratio against this benchmark.
 
 - In `initial.py`, write `search_points()` so it returns 11 points inside
   the triangle together with the corresponding normalised minimum triangle
-  area. Any construction is acceptable as a starting point (the baseline
-  lines up all 11 points on the base of the triangle, which is valid but
-  scores zero).
+  area. Any valid construction is acceptable as a starting point; a small
+  random search or a simple symmetric hand-built layout is enough to get
+  the pipeline moving.
+- In `evaluate.py`, write `validate_output()` so it checks the returned
+  points really lie inside the triangle and the reported score matches the
+  geometry, then fill in `aggregate_metrics()` so the score reported back
+  to Shinka is the benchmark ratio.
 - Write a short prompt in `prompt.txt` describing the problem to the LLM
   and any ideas you want it to try (symmetry, boundary placements, jittered
   lattices, gradient-style refinement, and so on).
 
-The evaluator and plotting code are already provided: `evaluate.py` will
-recompute the normalised minimum area from your returned points and
-compare it to the value you report, and `plotting.py` will draw the
-configuration with the critical smallest triangle highlighted.
+The geometry helpers and plotting code are already provided. In
+particular, `plotting.py` will draw the configuration with the critical
+smallest triangle highlighted once the evaluator is wired up.
 
 ## Running it
 
-From this folder:
+From this folder, after you fill in `search_points()`, the holes in
+`evaluate.py`, and `prompt.txt`:
 
 ```bash
 python3 initial.py                                           # sanity check
@@ -63,4 +67,3 @@ python3 run_evo.py                                           # launch Shinka
 - Points are accepted if they lie on or inside the triangle (with a small
   numerical tolerance). The reported score must agree with the score
   recomputed from the points.
-- For a worked version, see `../3b_heilbronn_triangle_solution`.
