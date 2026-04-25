@@ -133,16 +133,19 @@ non-negative block values together with its ratio. A simple block-based
 search is enough to get started, but the crucial point is that the
 returned values must stay non-negative.
 
-In `evaluate.py`, write `validate_output()` so it checks the return
-shape, enforces non-negativity, and verifies that the reported ratio
-matches the value recomputed from the returned step function. Then fill
-in `aggregate_metrics()` so the score reported back to Shinka is the
-benchmark ratio.
+- In `initial.py`, fill in `compute_c1()` and use it inside
+  `search_function()`.
+- In `evaluate.py`, fill in `compute_c1()`, then write
+  `validate_output()` so it checks the return shape, enforces
+  non-negativity, and verifies that the reported ratio matches the value
+  recomputed from the returned step function. Finally, fill in
+  `aggregate_metrics()` so the score reported back to Shinka is the
+  benchmark ratio.
 
 Write a short prompt in `prompt.txt` describing the mathematical problem,
 the output contract, and whatever ideas you want the LLM to try.
 
-The convolution helper and plotting code are already provided.
+Only the block-expansion scaffold and plotting code are provided.
 `plotting.py` visualises the step function and its autoconvolution,
 with the maximum of $f * f$ highlighted, once the evaluator is wired up.
 

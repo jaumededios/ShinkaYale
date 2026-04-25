@@ -15,8 +15,8 @@ def search_function(
 
     The key constraint for this exercise is that `f_values` must be
     non-negative. A simple block-based search is enough to get started:
-    sample a few non-negative piecewise-constant candidates, score them
-    with `compute_c1(values)`, and keep the best one.
+    sample a few non-negative piecewise-constant candidates, score them,
+    and keep the best one.
     """
     pass
 
@@ -32,15 +32,7 @@ def expand_blocks(block_values, num_points: int) -> np.ndarray:
 
 
 def compute_c1(f_values) -> float:
-    f_values = np.asarray(f_values, dtype=float)
-    dx = 0.5 / len(f_values)
-    integral = float(np.sum(f_values) * dx)
-
-    if abs(integral) < 1e-12:
-        return float("inf")
-
-    conv = np.convolve(f_values, f_values, mode="full") * dx
-    return float(np.max(conv) / (integral**2))
+    pass
 
 
 def run_autocorrelation(seed: int = 0, num_points: int = 400):

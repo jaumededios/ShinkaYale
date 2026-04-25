@@ -17,15 +17,7 @@ BENCHMARK = float(np.pi / 2)
 
 
 def compute_c1(f_values) -> float:
-    f_values = np.asarray(f_values, dtype=float)
-    dx = 0.5 / len(f_values)
-    integral = float(np.sum(f_values) * dx)
-
-    if abs(integral) < 1e-12:
-        return float("inf")
-
-    conv = np.convolve(f_values, f_values, mode="full") * dx
-    return float(np.max(conv) / (integral**2))
+    pass
 
 
 def validate_output(run_output, atol: float = 1e-6):

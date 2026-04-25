@@ -50,15 +50,18 @@ $(f_1, \dots, f_N)$ together with its ratio. Signed values are allowed in
 this problem, so a basic block-based search over positive and negative
 values is enough to get started.
 
-In `evaluate.py`, write `validate_output()` so it checks the return
-shape and verifies that the reported ratio matches the value recomputed
-from the returned step function. Then fill in `aggregate_metrics()` so
-the score reported back to Shinka is the benchmark ratio.
+- In `initial.py`, fill in `compute_c3()` and use it inside
+  `search_function()`.
+- In `evaluate.py`, fill in `compute_c3()`, then write
+  `validate_output()` so it checks the return shape and verifies that the
+  reported ratio matches the value recomputed from the returned step
+  function. Finally, fill in `aggregate_metrics()` so the score reported
+  back to Shinka is the benchmark ratio.
 
 Write a short prompt in `prompt.txt` describing the mathematical problem,
 the output contract, and whatever ideas you want the LLM to try.
 
-The convolution helper and plotting code are already provided.
+Only the block-expansion scaffold and plotting code are provided.
 `plotting.py` visualises the step function and its autoconvolution once
 the evaluator is wired up.
 

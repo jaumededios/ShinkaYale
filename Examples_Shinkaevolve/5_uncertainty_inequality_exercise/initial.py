@@ -12,9 +12,8 @@ def search_coefficients(seed: int = 0, num_coeffs: int = 3, num_candidates: int 
     - `r_max`: the largest positive sign-changing root of P(x) / x^2
 
     A simple coefficient search is enough to get started: try a few small
-    Hermite coefficient vectors, score them with `numeric_c4(coeffs)`,
-    and keep the best one. Preserve the return signature
-    `(coeffs, c4_bound, r_max)`.
+    Hermite coefficient vectors, score them, and keep the best one.
+    Preserve the return signature `(coeffs, c4_bound, r_max)`.
     """
     pass
 
@@ -23,53 +22,15 @@ def search_coefficients(seed: int = 0, num_coeffs: int = 3, num_candidates: int 
 
 
 def hermite_basis(num_coeffs: int):
-    degrees = [4 * k for k in range(num_coeffs + 1)]
-    polynomials = [hermite(degree) for degree in degrees]
-    max_degree = degrees[-1]
-
-    basis = []
-    values_at_zero = []
-    for poly in polynomials:
-        coeffs = np.zeros(max_degree + 1)
-        coeffs[max_degree - poly.order :] = poly.coef
-        basis.append(coeffs)
-        values_at_zero.append(float(poly(0.0)))
-
-    return np.asarray(basis), np.asarray(values_at_zero)
+    pass
 
 
 def polynomial_coefficients(coeffs):
-    coeffs = np.asarray(coeffs, dtype=float)
-    basis, values_at_zero = hermite_basis(len(coeffs))
-    forced = -float(np.dot(coeffs, values_at_zero[:-1])) / values_at_zero[-1]
-
-    all_coeffs = np.concatenate([coeffs, [forced]])
-    poly = np.sum(all_coeffs[:, None] * basis, axis=0)
-    if poly[0] < 0:
-        poly = -poly
-    return poly
+    pass
 
 
 def numeric_c4(coeffs):
-    """Fast floating-point companion to the exact evaluator."""
-    poly = polynomial_coefficients(coeffs)
-    quotient = poly[:-2]
-
-    roots = np.roots(quotient)
-    real_roots = roots[np.isreal(roots)].real
-    positive_roots = np.sort(real_roots[real_roots > 1e-8])
-    if len(positive_roots) == 0:
-        return float("inf"), float("inf")
-
-    r_max = None
-    for root in positive_roots:
-        eps = 1e-6 * max(1.0, abs(root))
-        if np.polyval(quotient, root - eps) * np.polyval(quotient, root + eps) < 0:
-            r_max = float(root)
-
-    if r_max is None:
-        return float("inf"), float("inf")
-    return float(r_max * r_max / (2.0 * np.pi)), r_max
+    pass
 
 
 def run_uncertainty(seed: int = 0):

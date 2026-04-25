@@ -80,17 +80,19 @@ That is the quantity the evaluator scores on. **Smaller is better.**
   `(coeffs, c4_bound, r_max)`. You are free to change the number of
   coefficients (up to 6), the search strategy, and the starting points
   — the evaluator only cares about the returned tuple.
+- `initial.py`: fill in the mathematical helpers `hermite_basis()`,
+  `polynomial_coefficients()`, and `numeric_c4()`.
 - `evaluate.py`: write `validate_output()` so it recomputes
   `(c4_bound, r_max)` from the returned coefficients and rejects any
   mismatch, then fill in `aggregate_metrics()` so smaller `c4_bound`
   values score better.
+- `evaluate.py`: fill in the exact-math helpers `hermite_4k_polys()`,
+  `construct_polynomial()`, `largest_positive_root()`, and `compute_c4()`.
 - `prompt.txt`: describe the problem, the Ansatz, and any search
   strategies you want the LLM to try (structured coefficient templates,
   random restarts, gradient-style local refinement, etc.).
 
-The Hermite/SymPy helper code and plotting code are already in place.
-In particular, the evaluator helpers rebuild $P$ using SymPy's exact
-arithmetic and recompute $r_{\max}$ by certified sign changes, and
+Only the outer exercise structure and plotting code are already in place.
 `plotting.py` draws the resulting polynomial once the evaluator is wired
 up.
 
