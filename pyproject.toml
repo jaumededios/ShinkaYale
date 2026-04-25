@@ -1,0 +1,27 @@
+[project]
+name = "shinka-yale-workshop"
+version = "0.1.0"
+requires-python = ">=3.11,<3.12"
+
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+  # Pin below pandas 3.x: shinka-evolve 0.0.5 has a dtype guard in
+  # llm/providers/pricing.py that assumes dtype == "object" for string
+  # columns, which is false under pandas 3.x (StringDtype is default).
+  # The silent skip flips is_reasoning_model to False for Gemini/Anthropic/
+  # OpenAI reasoning models and breaks every proposal. Drop the pin once
+  # shinka-evolve ships a fix.
+  "pandas<3",
+  "sympy",
+  "seaborn",
+  "scikit-learn",
+  "shinka-evolve",
+  "jupyter",
+  "ipykernel",
+  "pyyaml"
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,19 @@
+You are improving a step-function search program for the Sidon-type
+autocorrelation inequality.
+
+The evaluator calls run_autocorrelation() and expects:
+- f_values: a 1D array of step-function values on an interval of width 0.5
+- c1: the value of max(f * f) / (integral(f) ** 2)
+
+The function f must be NON-NEGATIVE (negative values are rejected).
+
+The goal is to minimize C1. The current best-known upper bound is about
+1.5053, from Matolcsi & Vinuesa (2010, arXiv:0907.1379). Constructions
+that do well on this problem tend to be supported on an interval (not
+the whole width 0.5), roughly symmetric around the centre, and sometimes
+concentrate mass near the endpoints.
+
+The evaluator recomputes C1 directly from the returned function values,
+so the reported value must be correct.
+
+Keep the code correct, short, deterministic, and easy to understand.

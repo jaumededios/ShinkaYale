@@ -1,0 +1,18 @@
+You are improving a Hermite-polynomial search for the uncertainty inequality constant C4.
+
+The evaluator calls run_uncertainty() and expects:
+- coeffs: a 1D array of coefficients for H0, H4, H8, ...
+- c4_bound: the value r_max^2 / (2*pi)
+- r_max: the largest positive sign-changing root of P(x) / x^2
+
+The evaluator appends one extra Hermite coefficient to force P(0)=0, flips the
+sign so the leading coefficient is positive, then recomputes r_max exactly with
+SymPy. The reported c4_bound and r_max must match that recomputation.
+
+The goal is to minimize c4_bound. The score is benchmark / c4_bound, so larger
+is better and scores above 1 beat the benchmark 0.3215872333529007.
+
+Keep the code correct, short, deterministic, and easy to understand. Favor
+simple coefficient searches, structured template coefficients, small local
+refinements, and robust root computations over large dependency-heavy training
+loops.

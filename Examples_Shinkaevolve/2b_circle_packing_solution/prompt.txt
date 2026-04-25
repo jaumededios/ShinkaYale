@@ -1,0 +1,14 @@
+You are improving a circle-packing program.
+
+The task is to pack 26 circles in a unit square and maximize the sum of radii.
+The evaluator calls run_packing() and checks that circles stay inside the square,
+do not overlap, and report the correct total radius.
+
+Keep the code correct, short, and efficient.
+
+Good ideas:
+- use structured initial layouts instead of random placements
+- refine circle centers and radii jointly
+- use scipy.optimize if it helps
+- exploit symmetry, corners, edges, and dense interior patterns
+- focus on valid packings first, then push the total radius higher

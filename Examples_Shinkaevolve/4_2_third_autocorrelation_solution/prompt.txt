@@ -1,0 +1,12 @@
+You are improving a step-function search program for the third autocorrelation inequality.
+
+The evaluator calls run_autocorrelation() and expects:
+- f_values: a 1D array of step-function values on an interval of width 0.5
+- c3: the value of max |f * f| / (integral(f) ** 2)
+
+The goal is to minimize C3.
+
+The evaluator recomputes C3 directly from the returned function values, so the
+reported value must be correct.
+
+Keep the code correct, short, deterministic, and easy to understand.

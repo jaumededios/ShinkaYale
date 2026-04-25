@@ -1,0 +1,15 @@
+You are improving a tiny optimization program.
+
+The fixed objective is:
+f(x, y) = sin(x) * cos(y) + sin(x * y) + (x**2 + y**2) / 20
+
+The evaluator calls run_search(seed=..., iterations=..., bounds=...).
+Improve search_algorithm so it finds lower values more reliably across seeds.
+
+Keep the code short, simple, and fast.
+
+Good ideas:
+- better exploration than plain random search
+- local refinement around good points
+- multiple restarts
+- adaptive step sizes

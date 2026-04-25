@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+import argparse
+import os
+
+import numpy as np
+
+from plotting import plot_autocorrelation
+from shinka.core import run_shinka_eval
+
+
+BENCHMARK = 1.4556427953745406
+
+
+def compute_c3(f_values) -> float:
+    f_values = np.asarray(f_values, dtype=float)
+    dx = 0.5 / len(f_values)
+    integral = float(np.sum(f_values) * dx)
+
+    if abs(integral) < 1e-12:
+        return float("inf")
+
+    conv = np.convolve(f_values, f_values, mode="full") * dx
+    return float(np.max(np.abs(conv)) / (integral**2))
+
+
+def validate_output(run_output, atol: float = 1e-6):
+    try:
+        f_values, reported_c3 = run_output
+    except (TypeError, ValueError):
+        return False, "run_autocorrelation must return (f_values, c3)."
+
+    f_values = np.asarray(f_values, dtype=float)
+    reported_c3 = float(reported_c3)
+
+    if f_values.ndim != 1 or len(f_values) == 0:
+        return False, "f_values must be a non-empty 1D array."
+    if not (np.all(np.isfinite(f_values)) and np.isfinite(reported_c3)):
+        return False, "Output contains non-finite values."
+
+    actual_c3 = compute_c3(f_values)
+    if not np.isfinite(actual_c3):
+        return False, "The integral of f is too close to zero."
+    if abs(actual_c3 - reported_c3) > atol:
+        return False, "Reported C3 does not match the recomputed value."
+
+    return True, None
+
+
+def get_experiment_kwargs(run_index: int) -> dict:
+    return {"seed": 0, "num_points": 400}
+
+
+def aggregate_metrics(results) -> dict:
+    if not results:
+        return {"combined_score": 0.0}
+
+    c3_values = [float(c3) for _, c3 in results]
+    mean_c3 = sum(c3_values) / len(c3_values)
+    best_values, best_c3 = min(results, key=lambda item: float(item[1]))
+
+    return {
+        "combined_score": BENCHMARK / mean_c3,
+        "public": {
+            "c3": mean_c3,
+            "benchmark_ratio": BENCHMARK / mean_c3,
+            "n_points": len(best_values),
+        },
+        "private": {
+            "best_c3": float(best_c3),
+        },
+        "extra_data": {
+            "f_values": np.asarray(best_values, dtype=float),
+            "c3": float(best_c3),
+        },
+    }
+
+
+def main(program_path: str, results_dir: str):
+    os.makedirs(results_dir, exist_ok=True)
+
+    metrics, correct, error_msg = run_shinka_eval(
+        program_path=program_path,
+        results_dir=results_dir,
+        experiment_fn_name="run_autocorrelation",
+        num_runs=1,
+        get_experiment_kwargs=get_experiment_kwargs,
+        validate_fn=validate_output,
+        aggregate_metrics_fn=aggregate_metrics,
+        plotting_fn=plot_autocorrelation,
+    )
+
+    print(f"Evaluated program: {program_path}")
+    print(f"Results saved to: {results_dir}")
+    print(f"Correct: {correct}")
+    if error_msg:
+        print(f"Error: {error_msg}")
+    print(f"Combined score: {metrics.get('combined_score', 0.0):.6f}")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Evaluate the third autocorrelation example")
+    parser.add_argument("--program_path", type=str, default="initial.py")
+    parser.add_argument("--results_dir", type=str, default="results")
+    args = parser.parse_args()
+    main(args.program_path, args.results_dir)
